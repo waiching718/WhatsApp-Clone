@@ -95,3 +95,8 @@
   padding: 10px;
   color: gray;
 }
+
+.chat__emoPicker {
+  position: absolute;
+  top: 0;
+}

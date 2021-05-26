@@ -7,6 +7,7 @@ import AttachFile from '@material-ui/icons/AttachFile'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon'
 import MicIcon from '@material-ui/icons/Mic'
+import Picker from 'emoji-picker-react'
 
 import { useParams } from 'react-router-dom'
 import db from '../firebase'
@@ -20,6 +21,7 @@ function Chat() {
     const [input, setInput] = useState('');
     const [roomName, setRoomName] = useState('');
     const [messages, setMessages] = useState([]);
+    const [openEmoji, setOpenEmoji] = useState(false);
     const [{user}, dispatch] = useStateValue();
     
     const { roomId } = useParams();
@@ -53,6 +55,14 @@ function Chat() {
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         })
         setInput('');
+    }
+
+    const onEmojiClick = (event, emojiObject) =>{
+        setInput(input + emojiObject.emoji)
+    }
+
+    const EmoIconClick = () =>{
+         openEmoji ?  setOpenEmoji(false) : setOpenEmoji(true);
     }
 
     return (
@@ -90,11 +100,18 @@ function Chat() {
                     </span>              
                 </p>
             ))}
-                
+
+            {openEmoji && (
+                <Picker className="chat__emoPicker" onEmojiClick={onEmojiClick} 
+                        pickerStyle={{position: 'absolute', bottom: '150px'}} 
+                    />
+            )}
             </div>
 
             <div className="chat__footer">
-                <IconButton>
+            
+            
+                <IconButton onClick={EmoIconClick}>
                     <InsertEmoticonIcon/>
                 </IconButton>
                 <form>
